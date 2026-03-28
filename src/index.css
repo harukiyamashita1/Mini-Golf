@@ -1,40 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Grotesk:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Patua+One&family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
-  
-  --color-haz-bg: #0a0a0a;
-  --color-haz-surface: #1a1a1a;
-  --color-haz-pink: #FF00FF;
-  --color-haz-cyan: #00FFFF;
-  --color-haz-yellow: #DFFF00;
+  --font-display: "Patua One", serif;
+  --font-sans: "Inter", sans-serif;
 }
 
 body {
-  background-color: var(--color-haz-bg);
-  color: #ffffff;
-  font-family: var(--font-sans);
+  background-color: #f5f5f4; /* stone-100 */
+  color: #292524; /* stone-800 */
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
-.font-display {
-  font-family: var(--font-display);
+/* Custom scrollbar for a cleaner look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f5f4;
+}
+::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
 }
 
-.text-gradient-neon {
-  background: linear-gradient(to right, var(--color-haz-cyan), var(--color-haz-pink));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Hide scrollbar for horizontal scrolling areas */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
-
-.glow-pink {
-  box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
-}
-
-.glow-cyan {
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

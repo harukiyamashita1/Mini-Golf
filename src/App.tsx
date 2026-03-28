@@ -18,7 +18,10 @@ import {
   Users,
   Star,
   Utensils,
-  Check
+  Check,
+  User,
+  Gift,
+  LogOut
 } from 'lucide-react';
 
 export default function App() {
@@ -30,6 +33,9 @@ export default function App() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [bookingStep, setBookingStep] = useState(1);
   const [partySize, setPartySize] = useState(2);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,6 +64,14 @@ export default function App() {
             <a href="#how-to" className="hover:text-haz-cyan transition-colors">遊び方</a>
             <a href="#pricing" className="hover:text-haz-cyan transition-colors">料金</a>
             <a href="#access" className="hover:text-haz-cyan transition-colors">アクセス</a>
+            
+            <button 
+              onClick={() => setIsAuthModalOpen(true)} 
+              className="flex items-center gap-2 hover:text-haz-cyan transition-colors"
+            >
+              <User size={18} /> {isLoggedIn ? 'マイページ' : 'ログイン / 登録'}
+            </button>
+
             <button 
               onClick={() => setIsBookingModalOpen(true)}
               className="bg-haz-pink hover:bg-haz-pink/80 text-white px-6 py-2.5 rounded-full font-bold transition-all glow-pink"
@@ -88,6 +102,13 @@ export default function App() {
             <a href="#how-to" onClick={() => setIsMobileMenuOpen(false)}>遊び方</a>
             <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)}>料金</a>
             <a href="#access" onClick={() => setIsMobileMenuOpen(false)}>アクセス</a>
+            <div className="h-px bg-white/10 my-2"></div>
+            <button 
+              onClick={() => { setIsMobileMenuOpen(false); setIsAuthModalOpen(true); }}
+              className="flex items-center gap-3 text-haz-cyan text-left"
+            >
+              <User size={24} /> {isLoggedIn ? 'マイページ' : 'ログイン / 無料会員登録'}
+            </button>
           </div>
         </motion.div>
       )}
@@ -284,6 +305,20 @@ export default function App() {
                   詳細を見る <ChevronRight size={16} />
                 </button>
               </div>
+            </div>
+
+            {/* Membership Banner */}
+            <div className="p-6 border-t border-white/10 bg-gradient-to-r from-haz-pink/10 to-haz-cyan/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div>
+                <h4 className="font-bold text-haz-pink flex items-center gap-2 mb-1"><Gift size={18}/> メンバーシップ特典</h4>
+                <p className="text-sm text-gray-300">無料会員登録でデジタルスタンプカードを発行。10回プレイすると<span className="text-white font-bold">次回1プレイ＆1ドリンクが無料</span>になります！</p>
+              </div>
+              <button 
+                onClick={() => { setAuthMode('signup'); setIsAuthModalOpen(true); }} 
+                className="shrink-0 bg-white/10 hover:bg-white/20 px-6 py-2 rounded-full text-sm font-bold transition-colors"
+              >
+                無料で登録する
+              </button>
             </div>
           </div>
         </div>
@@ -513,6 +548,102 @@ export default function App() {
           <ChevronRight size={18} />
         </button>
       </div>
+
+      {/* Auth / My Page Modal */}
+      {isAuthModalOpen && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setIsAuthModalOpen(false)}
+          ></div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative w-full max-w-md bg-haz-surface border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+          >
+            <div className="p-6 border-b border-white/10 flex justify-between items-center bg-haz-bg">
+              <h3 className="text-xl font-bold flex items-center gap-2">
+                <User className="text-haz-cyan" size={24} />
+                {isLoggedIn ? 'マイページ' : (authMode === 'login' ? 'ログイン' : '無料会員登録')}
+              </h3>
+              <button 
+                onClick={() => setIsAuthModalOpen(false)}
+                className="text-gray-400 hover:text-white transition-colors p-1"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto">
+              {isLoggedIn ? (
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <p className="text-gray-400 mb-4">ようこそ、<span className="text-white font-bold">ゲスト</span>様</p>
+                    <div className="bg-gradient-to-br from-haz-pink/10 to-haz-cyan/10 p-6 rounded-2xl border border-white/10 relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-haz-pink to-haz-cyan"></div>
+                      <h4 className="font-bold text-lg mb-4 flex items-center justify-center gap-2">
+                        <Gift className="text-haz-pink" /> デジタルスタンプカード
+                      </h4>
+                      <div className="grid grid-cols-5 gap-3 mb-6">
+                        {[1,2,3,4,5,6,7,8,9,10].map(num => (
+                          <div key={num} className={`aspect-square rounded-full flex items-center justify-center text-sm font-bold border-2 ${num <= 7 ? 'bg-haz-cyan text-haz-bg border-haz-cyan glow-cyan' : 'border-white/20 text-gray-600'}`}>
+                            {num <= 7 ? <Check size={16} /> : num}
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-sm font-bold text-haz-cyan bg-haz-cyan/10 py-2 rounded-lg">あと3回で1プレイ＆1ドリンク無料！</p>
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => setIsLoggedIn(false)} 
+                    className="w-full py-3 rounded-xl border border-white/10 text-gray-400 hover:bg-white/5 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <LogOut size={18} /> ログアウト
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="bg-haz-pink/10 border border-haz-pink/30 p-4 rounded-xl mb-6 text-center">
+                    <p className="text-haz-pink font-bold text-sm mb-1">＼ 会員限定のお得な特典 ／</p>
+                    <p className="text-white text-sm">10回プレイで<span className="text-haz-yellow font-bold text-base">次回1プレイ＆1ドリンク無料！</span></p>
+                  </div>
+                  
+                  {authMode === 'signup' && (
+                    <div>
+                      <label className="block text-sm font-bold mb-2 text-gray-300">お名前</label>
+                      <input type="text" placeholder="山田 太郎" className="w-full bg-haz-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-haz-cyan transition-colors" />
+                    </div>
+                  )}
+                  <div>
+                    <label className="block text-sm font-bold mb-2 text-gray-300">メールアドレス</label>
+                    <input type="email" placeholder="example@hazbomb.com" className="w-full bg-haz-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-haz-cyan transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold mb-2 text-gray-300">パスワード</label>
+                    <input type="password" placeholder="••••••••" className="w-full bg-haz-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-haz-cyan transition-colors" />
+                  </div>
+                  
+                  <button 
+                    onClick={() => setIsLoggedIn(true)} 
+                    className="w-full py-4 mt-4 rounded-xl font-bold transition-all bg-haz-cyan text-haz-bg hover:bg-haz-cyan/90 glow-cyan"
+                  >
+                    {authMode === 'login' ? 'ログインする' : '無料で登録する'}
+                  </button>
+                  
+                  <div className="text-center mt-4">
+                    <button 
+                      onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')} 
+                      className="text-sm text-gray-400 hover:text-white transition-colors"
+                    >
+                      {authMode === 'login' ? '新規登録はこちら' : 'すでにアカウントをお持ちの方はこちら'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* Booking / Availability Modal */}
       {isBookingModalOpen && (
