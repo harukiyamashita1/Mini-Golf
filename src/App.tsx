@@ -21,7 +21,8 @@ import {
   Check,
   User,
   Gift,
-  LogOut
+  LogOut,
+  Flag
 } from 'lucide-react';
 
 export default function App() {
@@ -62,6 +63,7 @@ export default function App() {
           <nav className="hidden md:flex items-center gap-8 font-medium text-sm">
             <a href="#concept" className="hover:text-haz-cyan transition-colors">コンセプト</a>
             <a href="#how-to" className="hover:text-haz-cyan transition-colors">遊び方</a>
+            <a href="#course" className="hover:text-haz-cyan transition-colors">コース</a>
             <a href="#pricing" className="hover:text-haz-cyan transition-colors">料金</a>
             <a href="#access" className="hover:text-haz-cyan transition-colors">アクセス</a>
             
@@ -100,6 +102,7 @@ export default function App() {
           <div className="flex flex-col gap-6 text-xl font-bold">
             <a href="#concept" onClick={() => setIsMobileMenuOpen(false)}>コンセプト</a>
             <a href="#how-to" onClick={() => setIsMobileMenuOpen(false)}>遊び方</a>
+            <a href="#course" onClick={() => setIsMobileMenuOpen(false)}>コース</a>
             <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)}>料金</a>
             <a href="#access" onClick={() => setIsMobileMenuOpen(false)}>アクセス</a>
             <div className="h-px bg-white/10 my-2"></div>
@@ -258,8 +261,58 @@ export default function App() {
         </div>
       </section>
 
+      {/* Course Map Section */}
+      <section id="course" className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-4xl font-bold mb-4">18 HOLES COURSE</h2>
+            <p className="text-gray-400">初心者から上級者まで楽しめる、狂気のネオンコース18ホール</p>
+          </div>
+
+          {/* 18 Holes Grid */}
+          <div className="grid grid-cols-6 md:grid-cols-9 gap-3 md:gap-6 mb-16 max-w-4xl mx-auto">
+            {[...Array(18)].map((_, i) => (
+              <motion.div 
+                key={i}
+                whileHover={{ scale: 1.1 }}
+                className={`aspect-square rounded-full border-2 flex items-center justify-center font-display font-bold text-lg md:text-xl cursor-pointer transition-all ${
+                  [4, 11, 17].includes(i) 
+                    ? 'border-haz-pink text-haz-pink bg-haz-pink/10 glow-pink' 
+                    : 'border-haz-cyan/30 text-haz-cyan hover:bg-haz-cyan hover:text-haz-bg hover:border-haz-cyan'
+                }`}
+              >
+                {i + 1}
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Signature Holes */}
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { hole: 5, name: "The Blackhole", desc: "吸い込まれるような錯覚に陥る難関ホール。ブラックライトの錯視を攻略せよ。", img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80" },
+              { hole: 12, name: "Neon Maze", desc: "鏡とネオンが織りなす無限の迷路。ボールの軌道が予測不能なトリッキーなコース。", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80" },
+              { hole: 18, name: "Hazbomb Final", desc: "最後のギミックをクリアしてホールインワンを狙え！成功すると特別な演出が...？", img: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&q=80" }
+            ].map((item, i) => (
+              <div key={i} className="bg-haz-surface rounded-3xl overflow-hidden border border-white/10 group">
+                <div className="h-48 w-full relative overflow-hidden">
+                  <div className="absolute top-4 left-4 z-10 bg-haz-pink text-white font-bold px-3 py-1 rounded-full text-sm flex items-center gap-1">
+                    <Flag size={14} /> HOLE {item.hole}
+                  </div>
+                  <img src={item.img} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-haz-surface to-transparent"></div>
+                </div>
+                <div className="p-6 relative -mt-12">
+                  <h3 className="font-bold text-xl mb-2 text-white">{item.name}</h3>
+                  <p className="text-sm text-gray-400">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Snapshot */}
-      <section id="pricing" className="py-24 px-6">
+      <section id="pricing" className="py-24 px-6 bg-haz-surface/30">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl font-bold mb-4">PRICING</h2>
