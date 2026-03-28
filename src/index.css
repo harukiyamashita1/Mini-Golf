@@ -1,38 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Patua+One&family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Fredoka:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Patua One", serif;
-  --font-sans: "Inter", sans-serif;
+  --font-sans: "Noto Sans JP", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fredoka", ui-sans-serif, system-ui, sans-serif;
+
+  --color-haz-bg: #f8fafc;
+  --color-haz-surface: #ffffff;
+  --color-haz-primary: #16a34a;
+  --color-haz-secondary: #dc2626;
+  --color-haz-accent: #0284c7;
+  --color-haz-yellow: #f59e0b;
 }
 
 body {
-  background-color: #f5f5f4; /* stone-100 */
-  color: #292524; /* stone-800 */
+  background-color: var(--color-haz-bg);
+  color: #334155;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom scrollbar for a cleaner look */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #f5f5f4;
-}
-::-webkit-scrollbar-thumb {
-  background: #d6d3d1;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a29e;
+.font-display {
+  font-family: var(--font-display);
 }
 
-/* Hide scrollbar for horizontal scrolling areas */
+.text-gradient-primary {
+  background: linear-gradient(135deg, var(--color-haz-primary), var(--color-haz-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shadow-soft {
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+}
+
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
 .scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
