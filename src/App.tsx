@@ -27,11 +27,33 @@ import {
   Coffee
 } from 'lucide-react';
 
+const holeData = [
+  { hole: 1, name: "Start Line", desc: "冒険の始まり。まずは小手調べのストレートコース。", img: "/hole-1.jpg" },
+  { hole: 2, name: "Windmill Spin", desc: "風車の羽をタイミングよくすり抜けよう。", img: "/hole-2.jpg" },
+  { hole: 3, name: "Castle Bridge", desc: "お城の跳ね橋を渡るスリリングなコース。", img: "/hole-3.jpg" },
+  { hole: 4, name: "Spiral Tower", desc: "塔の周りをぐるぐると回るスパイラルパット。", img: "/hole-4.jpg" },
+  { hole: 5, name: "Stone Arch", desc: "石のアーチをくぐり抜ける正確なショットが必要。", img: "/hole-5.jpg" },
+  { hole: 6, name: "Pond Crossing", desc: "池越えのショートホール。力加減に注意！", img: "/hole-6.jpg" },
+  { hole: 7, name: "Bumpy Road", desc: "デコボコ道がボールの軌道を狂わせる。", img: "/hole-7.jpg" },
+  { hole: 8, name: "The Roaring Volcano", desc: "煙を上げる巨大な火山を越える難関ホール。タイミングを見計らって打ち込もう！", img: "/hole-8.jpg" },
+  { hole: 9, name: "Oasis Rest", desc: "前半戦最後のホール。オアシスで一息つきましょう。", img: "/hole-9.jpg" },
+  { hole: 10, name: "Forest Maze", desc: "木々の間を縫うように進む迷路のようなコース。", img: "/hole-10.jpg" },
+  { hole: 11, name: "Dragon's Waterfall", desc: "ドラゴンの住む洞窟と美しい滝。水の音に癒されながら、正確なパットが求められます。", img: "/hole-11.jpg" },
+  { hole: 12, name: "Loop-de-Loop", desc: "勢いをつけて一回転ループをクリアせよ！", img: "/hole-12.jpg" },
+  { hole: 13, name: "Volcano Descent", desc: "火山の裏側を下るハイスピードコース。", img: "/hole-13.jpg" },
+  { hole: 14, name: "River Rapids", desc: "川の流れに沿ってボールを運ぶテクニカルホール。", img: "/hole-14.jpg" },
+  { hole: 15, name: "Treasure Cave", desc: "財宝が眠る洞窟。暗闇の中のカップを狙え。", img: "/hole-15.jpg" },
+  { hole: 16, name: "Pirate's Cove", desc: "青い池に浮かぶ海賊船と巨大タコ！ボールが水に落ちないように慎重に狙いを定めて。", img: "/hole-16.jpg" },
+  { hole: 17, name: "Octopus Tentacles", desc: "巨大タコの足が邪魔をする！隙間を縫ってパットを決めろ。", img: "/hole-17.jpg" },
+  { hole: 18, name: "Final Castle", desc: "最終ホールはお城の頂上へ。ホールインワンで有終の美を飾ろう！", img: "/hole-18.jpg" },
+];
+
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [selectedHole, setSelectedHole] = useState<number | null>(null);
   
   // Auth State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -265,6 +287,7 @@ export default function App() {
             {[...Array(18)].map((_, i) => (
               <motion.div 
                 key={i}
+                onClick={() => setSelectedHole(i + 1)}
                 whileHover={{ scale: 1.1 }}
                 className={`aspect-square rounded-full border-2 flex items-center justify-center font-display font-bold text-lg md:text-xl cursor-pointer transition-all shadow-sm ${
                   [7, 10, 15].includes(i) 
@@ -822,6 +845,60 @@ export default function App() {
                     </div>
                   </form>
                 )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Hole Detail Modal */}
+      <AnimatePresence>
+        {selectedHole !== null && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setSelectedHole(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl flex flex-col"
+            >
+              <div className="relative h-64 w-full">
+                <img 
+                  src={holeData[selectedHole - 1].img} 
+                  alt={holeData[selectedHole - 1].name} 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <button 
+                  onClick={() => setSelectedHole(null)} 
+                  className="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center backdrop-blur-sm transition-colors"
+                >
+                  <X size={20} />
+                </button>
+                <div className="absolute top-4 left-4 bg-haz-secondary text-white font-bold px-4 py-1.5 rounded-full text-sm flex items-center gap-1 shadow-md">
+                  <Flag size={16} /> HOLE {selectedHole}
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
+                <h3 className="absolute bottom-4 left-6 right-6 font-bold text-2xl text-white">
+                  {holeData[selectedHole - 1].name}
+                </h3>
+              </div>
+              <div className="p-6">
+                <p className="text-slate-600 leading-relaxed text-lg">
+                  {holeData[selectedHole - 1].desc}
+                </p>
+                <button 
+                  onClick={() => setSelectedHole(null)}
+                  className="w-full mt-6 bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold transition-colors"
+                >
+                  閉じる
+                </button>
               </div>
             </motion.div>
           </motion.div>
