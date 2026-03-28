@@ -12,13 +12,24 @@ import {
   ChevronRight,
   Train,
   Info,
-  Calendar
+  Calendar,
+  ChevronDown,
+  Instagram,
+  Users,
+  Star,
+  Utensils,
+  Check
 } from 'lucide-react';
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState('今日');
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [bookingStep, setBookingStep] = useState(1);
+  const [partySize, setPartySize] = useState(2);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -137,12 +148,18 @@ export default function App() {
           <div className="grid md:grid-cols-3 gap-8">
             <motion.div 
               whileHover={{ y: -10 }}
-              className="bg-haz-surface p-8 rounded-3xl border border-white/5"
+              className="bg-haz-surface p-8 rounded-3xl border border-white/5 flex flex-col"
             >
-              <div className="w-14 h-14 bg-haz-pink/20 rounded-2xl flex items-center justify-center mb-6 text-haz-pink">
-                <GlassWater size={32} />
+              <div className="h-40 w-full rounded-2xl mb-6 overflow-hidden relative">
+                <div className="absolute inset-0 bg-haz-pink/20 mix-blend-overlay z-10"></div>
+                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80" alt="Cocktails" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
-              <h3 className="text-2xl font-bold mb-3">Drink & Play</h3>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-haz-pink/20 rounded-xl flex items-center justify-center text-haz-pink shrink-0">
+                  <GlassWater size={24} />
+                </div>
+                <h3 className="text-2xl font-bold">Drink & Play</h3>
+              </div>
               <p className="text-gray-400 leading-relaxed">
                 お酒を片手にプレイ可能。オリジナルカクテルやクラフトビールと共に、新感覚のデートや飲み会を。
               </p>
@@ -150,12 +167,18 @@ export default function App() {
 
             <motion.div 
               whileHover={{ y: -10 }}
-              className="bg-haz-surface p-8 rounded-3xl border border-white/5"
+              className="bg-haz-surface p-8 rounded-3xl border border-white/5 flex flex-col"
             >
-              <div className="w-14 h-14 bg-haz-cyan/20 rounded-2xl flex items-center justify-center mb-6 text-haz-cyan">
-                <Camera size={32} />
+              <div className="h-40 w-full rounded-2xl mb-6 overflow-hidden relative">
+                <div className="absolute inset-0 bg-haz-cyan/20 mix-blend-overlay z-10"></div>
+                <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80" alt="Neon Golf" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
-              <h3 className="text-2xl font-bold mb-3">Insane Photo Spots</h3>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-haz-cyan/20 rounded-xl flex items-center justify-center text-haz-cyan shrink-0">
+                  <Camera size={24} />
+                </div>
+                <h3 className="text-2xl font-bold">Insane Photo Spots</h3>
+              </div>
               <p className="text-gray-400 leading-relaxed">
                 全9ホールが異なるネオンアート空間。どこを切り取ってもSNS映えする、非日常の没入体験。
               </p>
@@ -163,12 +186,18 @@ export default function App() {
 
             <motion.div 
               whileHover={{ y: -10 }}
-              className="bg-haz-surface p-8 rounded-3xl border border-white/5"
+              className="bg-haz-surface p-8 rounded-3xl border border-white/5 flex flex-col"
             >
-              <div className="w-14 h-14 bg-haz-yellow/20 rounded-2xl flex items-center justify-center mb-6 text-haz-yellow">
-                <CheckCircle size={32} />
+              <div className="h-40 w-full rounded-2xl mb-6 overflow-hidden relative">
+                <div className="absolute inset-0 bg-haz-yellow/20 mix-blend-overlay z-10"></div>
+                <img src="https://images.unsplash.com/photo-1554244933-d876deb6b2ff?auto=format&fit=crop&q=80" alt="Golf Clubs" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
-              <h3 className="text-2xl font-bold mb-3">Empty-handed OK</h3>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-12 h-12 bg-haz-yellow/20 rounded-xl flex items-center justify-center text-haz-yellow shrink-0">
+                  <CheckCircle size={24} />
+                </div>
+                <h3 className="text-2xl font-bold">Empty-handed OK</h3>
+              </div>
               <p className="text-gray-400 leading-relaxed">
                 クラブもボールも全て無料レンタル。ゴルフウェアも不要。いつもの服装で、手ぶらでふらっと立ち寄れます。
               </p>
@@ -260,6 +289,128 @@ export default function App() {
         </div>
       </section>
 
+      {/* Gallery Section */}
+      <section id="gallery" className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-end mb-12">
+            <div>
+              <h2 className="font-display text-4xl font-bold mb-2">GALLERY</h2>
+              <p className="text-gray-400">#Hazbomb で最高の夜を</p>
+            </div>
+            <button className="hidden md:flex items-center gap-2 text-haz-pink hover:text-haz-pink/80 font-bold transition-colors">
+              <Instagram size={20} /> Instagramを見る
+            </button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80" alt="Neon Golf" className="w-full h-64 object-cover rounded-2xl hover:scale-[1.02] transition-transform duration-300" referrerPolicy="no-referrer" />
+            <img src="https://images.unsplash.com/photo-1574096079513-d8259312b785?auto=format&fit=crop&q=80" alt="Friends having fun" className="w-full h-64 object-cover rounded-2xl hover:scale-[1.02] transition-transform duration-300" referrerPolicy="no-referrer" />
+            <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80" alt="Party" className="w-full h-64 object-cover rounded-2xl hover:scale-[1.02] transition-transform duration-300" referrerPolicy="no-referrer" />
+            <img src="https://images.unsplash.com/photo-1556626605-6490d1821884?auto=format&fit=crop&q=80" alt="Neon sign" className="w-full h-64 object-cover rounded-2xl hover:scale-[1.02] transition-transform duration-300" referrerPolicy="no-referrer" />
+          </div>
+          <button className="md:hidden mt-8 w-full flex items-center justify-center gap-2 text-haz-pink border border-haz-pink/30 rounded-xl py-3 font-bold">
+            <Instagram size={20} /> Instagramを見る
+          </button>
+        </div>
+      </section>
+
+      {/* Menu Preview Section */}
+      <section id="menu" className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-4xl font-bold mb-4">CAFE & BAR</h2>
+            <p className="text-gray-400">プレイを彩るオリジナルメニュー</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: "Neon Citrus Highball", price: "¥800", desc: "ブラックライトで光る当店シグネチャーカクテル。", img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80" },
+              { name: "Hazbomb Burger", price: "¥1,200", desc: "竹炭バンズを使用したボリューム満点の黒バーガー。", img: "https://images.unsplash.com/photo-1586816001966-79b736744398?auto=format&fit=crop&q=80" },
+              { name: "Galaxy Macarons", price: "¥600", desc: "宇宙をイメージした3色のマカロンセット。", img: "https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&q=80" }
+            ].map((item, i) => (
+              <motion.div key={i} whileHover={{ y: -5 }} className="bg-haz-surface rounded-3xl overflow-hidden border border-white/10">
+                <div className="h-48 w-full relative">
+                  <img src={item.img} alt={item.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                </div>
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-lg">{item.name}</h3>
+                    <span className="text-haz-cyan font-bold">{item.price}</span>
+                  </div>
+                  <p className="text-sm text-gray-400">{item.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <button className="text-haz-pink font-bold hover:underline flex items-center justify-center gap-1 mx-auto">
+              <Utensils size={18} /> フード・ドリンクメニューをもっと見る
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 px-6 bg-haz-surface/50">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-4xl font-bold mb-4">FAQ</h2>
+            <p className="text-gray-400">よくあるご質問</p>
+          </div>
+          <div className="space-y-4">
+            {[
+              { q: "ゴルフ未経験でも楽しめますか？", a: "はい、もちろんです！本格的なゴルフというよりは、エンターテインメント性を重視したコース設計になっています。初めての方でも盛り上がれる仕掛けがたくさんあります。" },
+              { q: "服装に指定はありますか？", a: "ドレスコードはございません。ヒールやスカートなど、いつものお出かけの服装でそのままプレイしていただけます。" },
+              { q: "予約なしでも入れますか？", a: "空きがあればご案内可能ですが、週末や夜間は混雑が予想されます。確実に入場いただくため、事前のWEB予約を強くおすすめしております。" },
+              { q: "子供も入場できますか？", a: "18:00まではお子様（保護者同伴）もご入場いただけます。18:00以降は20歳未満の方のご入場をお断りしております。" }
+            ].map((faq, i) => (
+              <div key={i} className="bg-haz-bg border border-white/10 rounded-2xl overflow-hidden">
+                <button 
+                  className="w-full px-6 py-5 flex justify-between items-center text-left font-bold"
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                >
+                  {faq.q}
+                  <ChevronDown className={`transition-transform ${openFaq === i ? 'rotate-180 text-haz-pink' : 'text-gray-500'}`} />
+                </button>
+                {openFaq === i && (
+                  <div className="px-6 pb-5 text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section className="py-24 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-display text-4xl font-bold mb-4">REVIEWS</h2>
+            <p className="text-gray-400">お客様の声</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: "@kana_tokyo", text: "デートで利用しました！ネオンが可愛くて写真がたくさん撮れました。お酒も美味しくて最高です！", rating: 5 },
+              { name: "@golf_boy", text: "手ぶらで行けるのが良い。コースも意外と難しくて白熱しました笑。また友達と来ます。", rating: 5 },
+              { name: "@takuya_99", text: "会社の飲み会の2次会で貸切利用。スタッフのノリも良くて大盛り上がりでした！コスパも◎", rating: 4 }
+            ].map((review, i) => (
+              <div key={i} className="bg-haz-surface p-8 rounded-3xl border border-white/5 relative">
+                <div className="flex gap-1 text-haz-yellow mb-4">
+                  {[...Array(review.rating)].map((_, j) => <Star key={j} size={16} fill="currentColor" />)}
+                </div>
+                <p className="text-gray-300 text-sm leading-relaxed mb-6">"{review.text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-xs font-bold text-gray-500">
+                    {review.name.charAt(1).toUpperCase()}
+                  </div>
+                  <span className="text-sm font-bold text-gray-400">{review.name}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Access / Location */}
       <section id="access" className="py-24 px-6 bg-haz-surface/30">
         <div className="max-w-6xl mx-auto">
@@ -270,11 +421,14 @@ export default function App() {
 
           <div className="grid md:grid-cols-2 gap-8 bg-haz-surface rounded-3xl overflow-hidden border border-white/10">
             <div className="h-[300px] md:h-auto bg-gray-800 relative">
-              {/* Placeholder for Google Map */}
-              <div className="absolute inset-0 flex items-center justify-center text-gray-500 flex-col gap-2">
-                <MapPin size={48} className="text-haz-pink opacity-50" />
-                <span>Google Map Embed</span>
-              </div>
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.747309536033!2d139.733045315258!3d35.65345698020088!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b7762635955%3A0x62804f58c4228c2e!2s1-ch%C5%8Dme-1%20Minamiazabu%2C%20Minato%20City%2C%20Tokyo%20106-0047%2C%20Japan!5e0!3m2!1sen!2sus!4v1680000000000!5m2!1sen!2sus" 
+                className="absolute inset-0 w-full h-full grayscale invert opacity-80"
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
             <div className="p-8 md:p-12 flex flex-col justify-center">
               <h3 className="text-3xl font-display font-bold mb-6">HAZBOMB AZABU</h3>
@@ -365,7 +519,7 @@ export default function App() {
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div 
             className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-            onClick={() => setIsBookingModalOpen(false)}
+            onClick={() => { setIsBookingModalOpen(false); setBookingStep(1); }}
           ></div>
           <motion.div 
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -375,10 +529,10 @@ export default function App() {
             <div className="p-6 border-b border-white/10 flex justify-between items-center bg-haz-bg">
               <h3 className="text-xl font-bold flex items-center gap-2">
                 <Calendar className="text-haz-cyan" size={24} />
-                空き状況・予約
+                {bookingStep === 1 ? '空き状況・予約' : bookingStep === 2 ? 'お客様情報の入力' : '予約完了'}
               </h3>
               <button 
-                onClick={() => setIsBookingModalOpen(false)}
+                onClick={() => { setIsBookingModalOpen(false); setBookingStep(1); }}
                 className="text-gray-400 hover:text-white transition-colors p-1"
               >
                 <X size={24} />
@@ -386,64 +540,172 @@ export default function App() {
             </div>
             
             <div className="p-6 overflow-y-auto">
-              <p className="text-sm text-gray-400 mb-6">
-                ご希望の日時を選択してください。
-                <span className="block mt-1">〇：空きあり　△：残りわずか　×：満席</span>
-              </p>
+              {bookingStep === 1 && (
+                <>
+                  <p className="text-sm text-gray-400 mb-6">
+                    ご希望の日時と人数を選択してください。
+                    <span className="block mt-1">〇：空きあり　△：残りわずか　×：満席</span>
+                  </p>
 
-              {/* Date Selector (Mock) */}
-              <div className="flex gap-3 overflow-x-auto pb-4 mb-6 snap-x scrollbar-hide">
-                {['今日', '明日', '10/26', '10/27', '10/28'].map((day, i) => (
-                  <button 
-                    key={i}
-                    className={`shrink-0 snap-center w-20 py-3 rounded-2xl border ${
-                      i === 0 
-                        ? 'border-haz-cyan bg-haz-cyan/10 text-haz-cyan' 
-                        : 'border-white/10 bg-haz-bg text-gray-400 hover:border-white/30'
-                    } flex flex-col items-center justify-center gap-1 transition-colors`}
-                  >
-                    <span className="text-xs font-bold">{day}</span>
-                  </button>
-                ))}
-              </div>
+                  {/* Party Size */}
+                  <div className="mb-6">
+                    <label className="block text-sm font-bold mb-3 flex items-center gap-2"><Users size={16} className="text-haz-pink"/> 利用人数</label>
+                    <div className="flex gap-3">
+                      {[1, 2, 3, 4, '5+'].map((num) => (
+                        <button
+                          key={num}
+                          onClick={() => setPartySize(num as number)}
+                          className={`flex-1 py-2 rounded-xl border font-bold transition-all ${
+                            partySize === num
+                              ? 'border-haz-pink bg-haz-pink/20 text-white'
+                              : 'border-white/10 bg-haz-bg text-gray-400 hover:border-white/30'
+                          }`}
+                        >
+                          {num}名
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-              {/* Time Slots (Mock) */}
-              <div className="grid grid-cols-4 gap-3">
-                {[
-                  { time: '15:00', status: '〇' },
-                  { time: '16:00', status: '〇' },
-                  { time: '17:00', status: '△' },
-                  { time: '18:00', status: '×' },
-                  { time: '19:00', status: '×' },
-                  { time: '20:00', status: '△' },
-                  { time: '21:00', status: '〇' },
-                  { time: '22:00', status: '〇' },
-                ].map((slot, i) => (
-                  <button 
-                    key={i}
-                    disabled={slot.status === '×'}
-                    className={`py-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
-                      slot.status === '×' 
-                        ? 'border-white/5 bg-white/5 text-gray-600 cursor-not-allowed' 
-                        : slot.status === '△'
-                        ? 'border-haz-yellow/30 bg-haz-yellow/5 text-haz-yellow hover:bg-haz-yellow/20'
-                        : 'border-haz-cyan/30 bg-haz-cyan/5 text-haz-cyan hover:bg-haz-cyan/20'
-                    }`}
-                  >
-                    <span className="text-sm font-bold">{slot.time}</span>
-                    <span className="text-lg leading-none">{slot.status}</span>
-                  </button>
-                ))}
-              </div>
+                  {/* Date Selector */}
+                  <div className="mb-6">
+                    <label className="block text-sm font-bold mb-3">日付</label>
+                    <div className="flex gap-3 overflow-x-auto pb-2 snap-x scrollbar-hide">
+                      {['今日', '明日', '10/26', '10/27', '10/28'].map((day, i) => (
+                        <button 
+                          key={i}
+                          onClick={() => { setSelectedDate(day); setSelectedTime(null); }}
+                          className={`shrink-0 snap-center w-20 py-3 rounded-2xl border ${
+                            selectedDate === day 
+                              ? 'border-haz-cyan bg-haz-cyan/10 text-haz-cyan' 
+                              : 'border-white/10 bg-haz-bg text-gray-400 hover:border-white/30'
+                          } flex flex-col items-center justify-center gap-1 transition-colors`}
+                        >
+                          <span className="text-xs font-bold">{day}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Time Slots */}
+                  <div>
+                    <label className="block text-sm font-bold mb-3">時間</label>
+                    <div className="grid grid-cols-4 gap-3">
+                      {[
+                        { time: '15:00', status: '〇' },
+                        { time: '16:00', status: '〇' },
+                        { time: '17:00', status: '△' },
+                        { time: '18:00', status: '×' },
+                        { time: '19:00', status: '×' },
+                        { time: '20:00', status: '△' },
+                        { time: '21:00', status: '〇' },
+                        { time: '22:00', status: '〇' },
+                      ].map((slot, i) => {
+                        const isFull = slot.status === '×' || (selectedDate === '明日' && i % 2 === 0);
+                        const status = isFull ? '×' : slot.status;
+                        const isSelected = selectedTime === slot.time;
+
+                        return (
+                          <button 
+                            key={i}
+                            disabled={isFull}
+                            onClick={() => setSelectedTime(slot.time)}
+                            className={`py-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
+                              isFull
+                                ? 'border-white/5 bg-white/5 text-gray-600 cursor-not-allowed' 
+                                : isSelected
+                                ? 'border-haz-pink bg-haz-pink/20 text-white shadow-[0_0_15px_rgba(255,0,255,0.4)]'
+                                : status === '△'
+                                ? 'border-haz-yellow/30 bg-haz-yellow/5 text-haz-yellow hover:bg-haz-yellow/20'
+                                : 'border-haz-cyan/30 bg-haz-cyan/5 text-haz-cyan hover:bg-haz-cyan/20'
+                            }`}
+                          >
+                            <span className="text-sm font-bold">{slot.time}</span>
+                            <span className="text-lg leading-none">{status}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {bookingStep === 2 && (
+                <div className="space-y-4">
+                  <div className="bg-haz-bg p-4 rounded-xl border border-white/5 mb-6">
+                    <p className="text-sm text-gray-400 mb-1">予約内容</p>
+                    <p className="font-bold text-lg">{selectedDate} {selectedTime} 〜 ({partySize}名)</p>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-bold mb-2 text-gray-300">お名前</label>
+                    <input type="text" placeholder="山田 太郎" className="w-full bg-haz-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-haz-cyan transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold mb-2 text-gray-300">メールアドレス</label>
+                    <input type="email" placeholder="example@hazbomb.com" className="w-full bg-haz-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-haz-cyan transition-colors" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold mb-2 text-gray-300">電話番号</label>
+                    <input type="tel" placeholder="090-XXXX-XXXX" className="w-full bg-haz-bg border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-haz-cyan transition-colors" />
+                  </div>
+                </div>
+              )}
+
+              {bookingStep === 3 && (
+                <div className="text-center py-8">
+                  <div className="w-20 h-20 bg-haz-cyan/20 rounded-full flex items-center justify-center mx-auto mb-6 text-haz-cyan glow-cyan">
+                    <Check size={40} />
+                  </div>
+                  <h4 className="text-2xl font-bold mb-2">予約が完了しました！</h4>
+                  <p className="text-gray-400 mb-6">
+                    ご入力いただいたメールアドレスに<br/>予約完了メールを送信しました。
+                  </p>
+                  <div className="bg-haz-bg p-4 rounded-xl border border-white/5 inline-block text-left">
+                    <p className="text-sm text-gray-400 mb-1">予約番号: <span className="text-white font-mono">HZB-{Math.floor(Math.random() * 10000)}</span></p>
+                    <p className="font-bold">{selectedDate} {selectedTime} ({partySize}名)</p>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div className="p-6 border-t border-white/10 bg-haz-bg">
-              <button 
-                disabled
-                className="w-full bg-gray-800 text-gray-500 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
-              >
-                時間を選択してください
-              </button>
+            <div className="p-6 border-t border-white/10 bg-haz-bg flex gap-3">
+              {bookingStep === 2 && (
+                <button 
+                  onClick={() => setBookingStep(1)}
+                  className="px-6 py-4 rounded-xl font-bold transition-all bg-gray-800 text-white hover:bg-gray-700"
+                >
+                  戻る
+                </button>
+              )}
+              
+              {bookingStep === 1 ? (
+                <button 
+                  disabled={!selectedTime}
+                  onClick={() => setBookingStep(2)}
+                  className={`flex-1 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
+                    selectedTime 
+                      ? 'bg-haz-pink text-white hover:bg-haz-pink/90 glow-pink' 
+                      : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                  }`}
+                >
+                  {selectedTime ? `次へ進む` : '時間を選択してください'}
+                </button>
+              ) : bookingStep === 2 ? (
+                <button 
+                  onClick={() => setBookingStep(3)}
+                  className="flex-1 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2 bg-haz-cyan text-haz-bg hover:bg-haz-cyan/90 glow-cyan"
+                >
+                  予約を確定する
+                </button>
+              ) : (
+                <button 
+                  onClick={() => { setIsBookingModalOpen(false); setBookingStep(1); }}
+                  className="w-full py-4 rounded-xl font-bold transition-all bg-haz-pink text-white hover:bg-haz-pink/90 glow-pink"
+                >
+                  閉じる
+                </button>
+              )}
             </div>
           </motion.div>
         </div>
