@@ -11,12 +11,14 @@ import {
   MessageCircle, 
   ChevronRight,
   Train,
-  Info
+  Info,
+  Calendar
 } from 'lucide-react';
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,7 +47,10 @@ export default function App() {
             <a href="#how-to" className="hover:text-haz-cyan transition-colors">遊び方</a>
             <a href="#pricing" className="hover:text-haz-cyan transition-colors">料金</a>
             <a href="#access" className="hover:text-haz-cyan transition-colors">アクセス</a>
-            <button className="bg-haz-pink hover:bg-haz-pink/80 text-white px-6 py-2.5 rounded-full font-bold transition-all glow-pink">
+            <button 
+              onClick={() => setIsBookingModalOpen(true)}
+              className="bg-haz-pink hover:bg-haz-pink/80 text-white px-6 py-2.5 rounded-full font-bold transition-all glow-pink"
+            >
               WEB予約
             </button>
           </nav>
@@ -111,7 +116,10 @@ export default function App() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <button className="bg-haz-cyan hover:bg-haz-cyan/80 text-haz-bg px-8 py-4 rounded-full font-bold text-lg transition-all glow-cyan flex items-center justify-center gap-2">
+            <button 
+              onClick={() => setIsBookingModalOpen(true)}
+              className="bg-haz-cyan hover:bg-haz-cyan/80 text-haz-bg px-8 py-4 rounded-full font-bold text-lg transition-all glow-cyan flex items-center justify-center gap-2"
+            >
               空き状況を見る <ChevronRight size={20} />
             </button>
           </motion.div>
@@ -257,7 +265,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl font-bold mb-4">ACCESS</h2>
-            <p className="text-gray-400">渋谷駅から徒歩3分。雨の日でも安心です。</p>
+            <p className="text-gray-400">麻布十番駅から徒歩5分。雨の日でも安心です。</p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 bg-haz-surface rounded-3xl overflow-hidden border border-white/10">
@@ -269,14 +277,14 @@ export default function App() {
               </div>
             </div>
             <div className="p-8 md:p-12 flex flex-col justify-center">
-              <h3 className="text-3xl font-display font-bold mb-6">HAZBOMB SHIBUYA</h3>
+              <h3 className="text-3xl font-display font-bold mb-6">HAZBOMB AZABU</h3>
               
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <MapPin className="text-haz-cyan shrink-0" />
                   <div>
-                    <p className="font-medium">〒150-0042</p>
-                    <p className="text-gray-300">東京都渋谷区宇田川町XX-XX<br/>ネオンビル B1F</p>
+                    <p className="font-medium">〒106-0047</p>
+                    <p className="text-gray-300">東京都港区南麻布１丁目XX-XX<br/>ネオンビル B1F</p>
                   </div>
                 </div>
                 
@@ -284,7 +292,7 @@ export default function App() {
                   <Train className="text-haz-cyan shrink-0" />
                   <div>
                     <p className="font-medium">電車でお越しの方</p>
-                    <p className="text-gray-300">JR渋谷駅「A2出口」より徒歩3分</p>
+                    <p className="text-gray-300">東京メトロ南北線・都営大江戸線<br/>「麻布十番駅」1番出口より徒歩5分</p>
                   </div>
                 </div>
 
@@ -343,11 +351,103 @@ export default function App() {
           <MessageCircle size={20} />
           <span className="text-sm">LINEで質問</span>
         </button>
-        <button className="flex-[1.5] bg-haz-pink hover:bg-haz-pink/90 text-white rounded-xl font-bold py-3 flex items-center justify-center gap-2 transition-colors glow-pink">
+        <button 
+          onClick={() => setIsBookingModalOpen(true)}
+          className="flex-[1.5] bg-haz-pink hover:bg-haz-pink/90 text-white rounded-xl font-bold py-3 flex items-center justify-center gap-2 transition-colors glow-pink"
+        >
           <span className="text-sm">WEB予約</span>
           <ChevronRight size={18} />
         </button>
       </div>
+
+      {/* Booking / Availability Modal */}
+      {isBookingModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            onClick={() => setIsBookingModalOpen(false)}
+          ></div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative w-full max-w-lg bg-haz-surface border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]"
+          >
+            <div className="p-6 border-b border-white/10 flex justify-between items-center bg-haz-bg">
+              <h3 className="text-xl font-bold flex items-center gap-2">
+                <Calendar className="text-haz-cyan" size={24} />
+                空き状況・予約
+              </h3>
+              <button 
+                onClick={() => setIsBookingModalOpen(false)}
+                className="text-gray-400 hover:text-white transition-colors p-1"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="p-6 overflow-y-auto">
+              <p className="text-sm text-gray-400 mb-6">
+                ご希望の日時を選択してください。
+                <span className="block mt-1">〇：空きあり　△：残りわずか　×：満席</span>
+              </p>
+
+              {/* Date Selector (Mock) */}
+              <div className="flex gap-3 overflow-x-auto pb-4 mb-6 snap-x scrollbar-hide">
+                {['今日', '明日', '10/26', '10/27', '10/28'].map((day, i) => (
+                  <button 
+                    key={i}
+                    className={`shrink-0 snap-center w-20 py-3 rounded-2xl border ${
+                      i === 0 
+                        ? 'border-haz-cyan bg-haz-cyan/10 text-haz-cyan' 
+                        : 'border-white/10 bg-haz-bg text-gray-400 hover:border-white/30'
+                    } flex flex-col items-center justify-center gap-1 transition-colors`}
+                  >
+                    <span className="text-xs font-bold">{day}</span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Time Slots (Mock) */}
+              <div className="grid grid-cols-4 gap-3">
+                {[
+                  { time: '15:00', status: '〇' },
+                  { time: '16:00', status: '〇' },
+                  { time: '17:00', status: '△' },
+                  { time: '18:00', status: '×' },
+                  { time: '19:00', status: '×' },
+                  { time: '20:00', status: '△' },
+                  { time: '21:00', status: '〇' },
+                  { time: '22:00', status: '〇' },
+                ].map((slot, i) => (
+                  <button 
+                    key={i}
+                    disabled={slot.status === '×'}
+                    className={`py-3 rounded-xl border flex flex-col items-center justify-center gap-1 transition-all ${
+                      slot.status === '×' 
+                        ? 'border-white/5 bg-white/5 text-gray-600 cursor-not-allowed' 
+                        : slot.status === '△'
+                        ? 'border-haz-yellow/30 bg-haz-yellow/5 text-haz-yellow hover:bg-haz-yellow/20'
+                        : 'border-haz-cyan/30 bg-haz-cyan/5 text-haz-cyan hover:bg-haz-cyan/20'
+                    }`}
+                  >
+                    <span className="text-sm font-bold">{slot.time}</span>
+                    <span className="text-lg leading-none">{slot.status}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-6 border-t border-white/10 bg-haz-bg">
+              <button 
+                disabled
+                className="w-full bg-gray-800 text-gray-500 py-4 rounded-xl font-bold transition-all flex items-center justify-center gap-2"
+              >
+                時間を選択してください
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
